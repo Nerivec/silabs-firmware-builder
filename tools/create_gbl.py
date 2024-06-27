@@ -188,20 +188,6 @@ def main():
                 "CPC_SECONDARY_APP_VERSION_SUFFIX"
             ]
 
-    if "zwave_version" in gbl_dynamic:
-        gbl_dynamic.remove("zwave_version")
-        zwave_esf_props = parse_properties_file(
-            (gsdk_path / "protocol/z-wave/esf.properties").read_text()
-        )
-        metadata["zwave_version"] = zwave_esf_props["version"][0]
-
-    if "ot_rcp_version" in gbl_dynamic:
-        gbl_dynamic.remove("ot_rcp_version")
-        openthread_config_h = parse_c_header_defines(
-            (project_root / "config/sl_openthread_generic_config.h").read_text()
-        )
-        metadata["ot_rcp_version"] = openthread_config_h["PACKAGE_STRING"]
-
     if "gecko_bootloader_version" in gbl_dynamic:
         gbl_dynamic.remove("gecko_bootloader_version")
         btl_config_h = parse_c_header_defines(

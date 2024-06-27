@@ -76,9 +76,7 @@ def get_toolchain_default_paths() -> list[pathlib.Path]:
 def get_sdk_default_paths() -> list[pathlib.Path]:
     """Return the path to the SDK."""
     if sys.platform == "darwin":
-        return list(
-            pathlib.Path("~/SimplicityStudio/SDKs").expanduser().glob("gecko_sdk*")
-        )
+        return list(pathlib.Path("~/SimplicityStudio/SDKs").expanduser().glob("simplicity_sdk*"))
 
     return []
 
@@ -396,12 +394,12 @@ def main():
     # Find the SDK version required by the project
     for sdk in args.sdks:
         try:
-            sdk_meta = yaml.load((sdk / "gecko_sdk.slcs").read_text())
+            sdk_meta = yaml.load((sdk / "simplicity_sdk.slcs").read_text())
         except FileNotFoundError:
             LOGGER.warning("SDK %s is not valid, skipping", sdk)
             continue
 
-        assert base_project["sdk"]["id"] == "gecko_sdk"
+        assert base_project["sdk"]["id"] == "simplicity_sdk"
 
         LOGGER.info("SDK %s has version %s", sdk, sdk_meta["sdk_version"])
 
@@ -565,7 +563,7 @@ def main():
     extra_compiler_flags = [
         f"-ffile-prefix-map={str(src.absolute())}={dst}"
         for src, dst in {
-            sdk: "/gecko_sdk",
+            sdk: "/simplicity_sdk",
             args.build_dir: "/src",
             toolchain: "/toolchain",
         }.items()
