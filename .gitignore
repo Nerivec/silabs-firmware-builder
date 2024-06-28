@@ -9,6 +9,7 @@ autogen/
 *.project.mak
 *.Makefile
 build/
+build_*/
 artifact/
 artifacts/
 trashed_modified_files/
