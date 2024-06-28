@@ -76,7 +76,9 @@ def get_toolchain_default_paths() -> list[pathlib.Path]:
 def get_sdk_default_paths() -> list[pathlib.Path]:
     """Return the path to the SDK."""
     if sys.platform == "darwin":
-        return list(pathlib.Path("~/SimplicityStudio/SDKs").expanduser().glob("simplicity_sdk*"))
+        return list(
+            pathlib.Path("~/SimplicityStudio/SDKs").expanduser().glob("simplicity_sdk*")
+        )
 
     return []
 
