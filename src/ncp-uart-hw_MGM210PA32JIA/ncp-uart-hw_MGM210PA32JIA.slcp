@@ -42,6 +42,7 @@ component:
 - {id: zigbee_debug_print}
 - {id: zigbee_device_config}
 - {id: zigbee_gp}
+- {id: zigbee_mfglib}
 - {id: zigbee_ncp_uart_hardware}
 - {id: zigbee_pro_stack}
 - {id: zigbee_r22_support}
