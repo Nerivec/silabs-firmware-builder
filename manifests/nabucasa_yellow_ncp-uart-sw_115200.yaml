@@ -4,7 +4,7 @@ base_project: src/ncp-uart-hw_MGM210PA32JIA
 filename: "{manifest_name}_{ezsp_version}"
 
 gbl:
-  fw_type: ncp-uart-hw
+  fw_type: ncp-uart-sw
   dynamic: ["ezsp_version"]
   baudrate: 115200
 
