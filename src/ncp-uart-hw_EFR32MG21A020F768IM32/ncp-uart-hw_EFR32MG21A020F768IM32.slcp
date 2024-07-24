@@ -27,7 +27,7 @@ source:
 - {path: main.c}
 - {path: app.c}
 tag: [prebuilt_demo]
-sdk: {id: simplicity_sdk, version: 2024.6.0}
+sdk: {id: simplicity_sdk, version: 2024.6.1}
 toolchain_settings: []
 component:
 - {id: EFR32MG21A020F768IM32}

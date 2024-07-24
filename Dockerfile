@@ -45,11 +45,11 @@ RUN \
     && tar -C /opt -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz \
     && rm arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
 
-# Simplicity SDK 2024.6.0
+# Simplicity SDK 2024.6.1
 RUN \
-    curl -o simplicity_sdk_2024.6.0.zip -L https://github.com/SiliconLabs/simplicity_sdk/releases/download/v2024.6.0/sisdk-sdk.zip \
-    && unzip -q -d simplicity_sdk_2024.6.0 simplicity_sdk_2024.6.0.zip \
-    && rm simplicity_sdk_2024.6.0.zip
+    curl -o simplicity_sdk_2024.6.1.zip -L https://github.com/SiliconLabs/simplicity_sdk/releases/download/v2024.6.1/gecko-sdk.zip \
+    && unzip -q -d simplicity_sdk_2024.6.1 simplicity_sdk_2024.6.1.zip \
+    && rm simplicity_sdk_2024.6.1.zip
 
 ARG USERNAME=builder
 ARG USER_UID=1000

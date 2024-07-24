@@ -48,6 +48,29 @@
 // <i> Default: 0
 #define SL_FEM_UTIL_TX_HIGH_POWER_ENABLE   0
 // </h>
+
+// <h> Automatic external FEM LNA bypass Configuration
+// <e SL_FEM_UTIL_AUTO_LNA_BYPASS_ENABLE> Enable automatic LNA bypass
+// <i> Default: 0
+#define SL_FEM_UTIL_AUTO_LNA_BYPASS_ENABLE              0
+// <o SL_FEM_UTIL_AUTO_LNA_BYPASS_THRESHOLD> LNA bypass threshold
+// <1-31:1>
+// <i> Default: 12
+#define SL_FEM_UTIL_AUTO_LNA_BYPASS_THRESHOLD           12
+// <o SL_FEM_UTIL_AUTO_LNA_BYPASS_DELTA_RSSI_DBM> LNA bypass delta RSSI (dBm)
+// <1-255:1>
+// <i> Default: 15
+#define SL_FEM_UTIL_AUTO_LNA_BYPASS_DELTA_RSSI_DBM      15
+// <o SL_FEM_UTIL_AUTO_LNA_BYPASS_POLARITY> LNA bypass GPIO polarity
+// <0-1:1>
+// <i> Default: 1
+#define SL_FEM_UTIL_AUTO_LNA_BYPASS_POLARITY            1
+// <o SL_FEM_UTIL_AUTO_LNA_BYPASS_TIMEOUT_US> LNA bypass timeout (Us)
+// <1-65535:1>
+// <i> Default: 4000
+#define SL_FEM_UTIL_AUTO_LNA_BYPASS_TIMEOUT_US          4000
+// </e>
+// </h>
 // <<< end of configuration section >>>
 
 // <<< sl:start pin_tool >>>
