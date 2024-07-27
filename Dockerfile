@@ -18,7 +18,8 @@ RUN \
        python3 \
        python3-ruamel.yaml \
        unzip \
-       xz-utils
+       xz-utils \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Simplicity Commander (unfortunately no stable URL available, this
 # is known to be working with Commander_linux_x86_64_1v15p0b1306.tar.bz).
@@ -47,7 +48,7 @@ RUN \
 
 # Simplicity SDK 2024.6.1
 RUN \
-    curl -o simplicity_sdk_2024.6.1.zip -L https://github.com/SiliconLabs/simplicity_sdk/releases/download/v2024.6.1/gecko-sdk.zip \
+    curl -o simplicity_sdk_2024.6.1.zip -L https://github.com/SiliconLabs/simplicity_sdk/releases/download/v2024.6.1-0/sisdk-sdk.zip \
     && unzip -q -d simplicity_sdk_2024.6.1 simplicity_sdk_2024.6.1.zip \
     && rm simplicity_sdk_2024.6.1.zip
 
