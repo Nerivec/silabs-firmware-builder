@@ -4,7 +4,7 @@ base_project: src/rcp-uart-802154-blehci_EFR32MG21A020F768IM32
 filename: "{manifest_name}_{sdk_version}"
 
 gbl:
-  fw_type: rcp-uart-802154-blehci
+  fw_type: rcp-uart-802154-blehci-hw
   dynamic: ["ezsp_version", "ot_version", "ble_version", "cpc_version"]
   baudrate: 460800
 
