@@ -1,4 +1,4 @@
-name: SLZB-07 Zigbee
+name: SLZB-07 SW Zigbee
 device: EFR32MG21A020F768IM32
 base_project: src/ncp-uart-hw_EFR32MG21A020F768IM32
 filename: "{manifest_name}_{ezsp_version}"
