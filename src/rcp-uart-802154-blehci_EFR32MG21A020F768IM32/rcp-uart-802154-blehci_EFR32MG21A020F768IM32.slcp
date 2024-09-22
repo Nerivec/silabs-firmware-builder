@@ -27,7 +27,7 @@ include:
   file_list:
   - {path: app.h}
   - {path: reset_util.h}
-sdk: {id: simplicity_sdk, version: 2024.6.1}
+sdk: {id: simplicity_sdk, version: 2024.6.2}
 toolchain_settings: []
 component:
 - {id: EFR32MG21A020F768IM32}
