@@ -27,7 +27,7 @@ source:
 - {path: main.c}
 - {path: app.c}
 tag: [prebuilt_demo]
-sdk: {id: simplicity_sdk, version: 2024.6.1}
+sdk: {id: simplicity_sdk, version: 2024.6.2}
 toolchain_settings: []
 component:
 - {id: MGM210PA32JIA}

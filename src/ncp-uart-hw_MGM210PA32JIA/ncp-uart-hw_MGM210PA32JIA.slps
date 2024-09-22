@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
   <descriptors name="ncp-uart-hw_MGM210PA32JIA">
-    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.sisdk:2024.6.1._1865891480"/>
+    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.sisdk:2024.6.2._1865891480"/>
     <properties key="universalConfig.relativeWorkspacePath" value="../ncp-uart-hw_MGM210PA32JIA.slcw"/>
     <properties key="universalConfig.generationDirectory" value=""/>
     <properties key="universalConfig.toolchainCompatibility" value="iar gcc"/>
