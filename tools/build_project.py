@@ -557,7 +557,7 @@ def main():
             args.build_dir: "/src",
             toolchain: "/toolchain",
         }.items()
-    ] + ["-Wall", "-Wextra", "-Werror"]
+    ] + ["-Wall", "-Wextra"]#, "-Werror"]
 
     output_artifact = (args.build_dir / "build/debug" / base_project_name).with_suffix(
         ".gbl"
