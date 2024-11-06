@@ -26,8 +26,10 @@
 
 #if (LARGE_NETWORK_TESTING == 0)
 
+#include "btl_interface.h"
 #include "network-steering.h"
 #include "stack/include/zigbee-device-stack.h"
+#include "app/framework/plugin/basic/basic.h"
 
 #if defined(SL_CATALOG_LED0_PRESENT)
 #include "sl_led.h"
@@ -121,6 +123,21 @@ void sl_zigbee_af_network_steering_complete_cb(sl_status_t status,
     led_turn_off(COMMISSIONING_STATUS_LED);
     sl_zigbee_af_event_set_delay_ms(&commissioning_event, NWK_STEERING_COOLDOWN_MS);
   }
+}
+
+/** @brief Reset To Factory Defaults
+ *
+ * This function is called by the Basic server plugin when a request to reset
+ * to factory defaults is received. The plugin will reset attributes managed by
+ * the framework to their default values. The application should perform any
+ * other necessary reset-related operations in this callback, including
+ * resetting any externally-stored attributes.
+ *
+ * @param endpoint   Ver.: always
+ */
+void sl_zigbee_af_basic_reset_to_factory_defaults_cb(uint8_t endpoint)
+{
+  bootloader_rebootAndInstall();
 }
 
 /** @brief
