@@ -44,12 +44,12 @@
 
 #define NWK_STEERING_COOLDOWN_MS 10000
 
-static sl_zigbee_af_event_t commissioning_led_event;
+static sl_zigbee_af_event_t commissioning_event;
 
 //---------------
 // Event handlers
 
-static void commissioning_led_event_handler(sl_zigbee_af_event_t *event)
+static void commissioning_event_handler(sl_zigbee_af_event_t *event)
 {
   led_turn_on(COMMISSIONING_STATUS_LED);
 
@@ -73,9 +73,10 @@ void sl_zigbee_af_stack_status_cb(sl_status_t status)
 {
   if (status == SL_STATUS_NETWORK_DOWN) {
     led_turn_off(COMMISSIONING_STATUS_LED);
-    sl_zigbee_af_event_set_delay_ms(&commissioning_led_event, NWK_STEERING_COOLDOWN_MS);
+    sl_zigbee_af_event_set_delay_ms(&commissioning_event, NWK_STEERING_COOLDOWN_MS);
   } else if (status == SL_STATUS_NETWORK_UP) {
-    // make some noise on start for reconnect (otherwise perceived as offline until pinged)
+    // make some noise on start for reconnect
+    // (otherwise perceived as offline until pinged)
     sl_zigbee_send_device_announcement();
     led_turn_on(COMMISSIONING_STATUS_LED);
   }
@@ -86,9 +87,9 @@ void sl_zigbee_af_stack_status_cb(sl_status_t status)
  */
 void sl_zigbee_af_main_init_cb(void)
 {
-  sl_zigbee_af_event_init(&commissioning_led_event, commissioning_led_event_handler);
+  sl_zigbee_af_event_init(&commissioning_event, commissioning_event_handler);
 
-  sl_zigbee_af_event_set_active(&commissioning_led_event);
+  sl_zigbee_af_event_set_active(&commissioning_event);
 }
 
 /** @brief Complete network steering.
@@ -118,7 +119,7 @@ void sl_zigbee_af_network_steering_complete_cb(sl_status_t status,
 
   if (status != SL_STATUS_OK) {
     led_turn_off(COMMISSIONING_STATUS_LED);
-    sl_zigbee_af_event_set_delay_ms(&commissioning_led_event, NWK_STEERING_COOLDOWN_MS);
+    sl_zigbee_af_event_set_delay_ms(&commissioning_event, NWK_STEERING_COOLDOWN_MS);
   }
 }
 
