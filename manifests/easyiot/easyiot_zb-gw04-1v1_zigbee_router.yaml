@@ -1,4 +1,4 @@
-name: ZB-GW04-1v1 Zigbee Router
+name: easyiot ZB-GW04-1v1 Zigbee Router
 device: EFR32MG21A020F768IM32
 base_project: src/zigbee_router
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"
@@ -67,13 +67,8 @@ c_defines:
 
 zap_config:
   endpoint_types:
-    - name: "Centralized"
+    - name: Centralized
       clusters:
-        - name: "Basic"
-          attribute_defaults:
-              "model identifier": ZB-GW04
-              "manufacturer name": easyiot
-              "date code": template:{now:%Y%m%d%H%M%S}
-              "sw build id": template:{sdk_version}
+        - name: Basic
           remove:
             - "Over the Air Bootloading"

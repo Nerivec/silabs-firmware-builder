@@ -1,4 +1,4 @@
-name: Yellow OpenThread RCP
+name: NabuCasa Yellow OpenThread RCP
 device: MGM210PA32JIA
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}"

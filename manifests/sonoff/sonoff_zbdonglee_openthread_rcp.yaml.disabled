@@ -1,4 +1,4 @@
-name: ZBDongle-E OpenThread RCP
+name: SONOFF DONGLE-E OpenThread RCP
 device: EFR32MG21A020F768IM32
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}_{fw_variant}"

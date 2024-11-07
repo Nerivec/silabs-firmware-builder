@@ -1,4 +1,4 @@
-name: SkyConnect Bootloader
+name: NabuCasa SkyConnect Bootloader
 device: EFR32MG21A020F512IM32
 base_project: src/bootloader
 filename: "{manifest_name}_{gecko_bootloader_version}"

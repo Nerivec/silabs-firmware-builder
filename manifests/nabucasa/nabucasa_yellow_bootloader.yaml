@@ -1,4 +1,4 @@
-name: Yellow Bootloader
+name: NabuCasa Yellow Bootloader
 device: MGM210PA32JIA
 base_project: src/bootloader
 filename: "{manifest_name}_{gecko_bootloader_version}"

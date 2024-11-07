@@ -1,4 +1,4 @@
-name: SLZB-07Mg24 Bootloader
+name: SMLIGHT SLZB-07MG24 Bootloader
 device: EFR32MG24A020F1024IM40
 base_project: src/bootloader
 filename: "{manifest_name}_{gecko_bootloader_version}"

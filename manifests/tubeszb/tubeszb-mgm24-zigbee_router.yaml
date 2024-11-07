@@ -68,13 +68,8 @@ c_defines:
 
 zap_config:
   endpoint_types:
-    - name: "Centralized"
+    - name: Centralized
       clusters:
-        - name: "Basic"
-          attribute_defaults:
-              "model identifier": MGM24
-              "manufacturer name": TubesZB
-              "date code": template:{now:%Y%m%d%H%M%S}
-              "sw build id": template:{sdk_version}
+        - name: Basic
           remove:
             - "Over the Air Bootloading"

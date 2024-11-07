@@ -1,4 +1,4 @@
-name: MGM240P Zigbee Router
+name: SparkFun MGM240P Zigbee Router
 device: MGM240PB32VNA
 base_project: src/zigbee_router
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"
@@ -67,13 +67,8 @@ c_defines:
 
 zap_config:
   endpoint_types:
-    - name: "Centralized"
+    - name: Centralized
       clusters:
-        - name: "Basic"
-          attribute_defaults:
-              "model identifier": MGM240P
-              "manufacturer name": SparkFun
-              "date code": template:{now:%Y%m%d%H%M%S}
-              "sw build id": template:{sdk_version}
+        - name: Basic
           remove:
             - "Over the Air Bootloading"

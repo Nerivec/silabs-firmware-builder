@@ -1,4 +1,4 @@
-name: SLZB-07Mg24 Zigbee Router
+name: SMLIGHT SLZB-07MG24 Zigbee Router
 device: EFR32MG24A020F1024IM40
 base_project: src/zigbee_router
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"
@@ -68,13 +68,8 @@ c_defines:
 
 zap_config:
   endpoint_types:
-    - name: "Centralized"
+    - name: Centralized
       clusters:
-        - name: "Basic"
-          attribute_defaults:
-              "model identifier": SLZB-07MG24
-              "manufacturer name": SMLIGHT
-              "date code": template:{now:%Y%m%d%H%M%S}
-              "sw build id": template:{sdk_version}
+        - name: Basic
           remove:
             - "Over the Air Bootloading"

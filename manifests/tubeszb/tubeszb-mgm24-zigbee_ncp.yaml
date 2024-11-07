@@ -1,4 +1,4 @@
-name: TubesZB MGM24 Zigbee
+name: TubesZB MGM24 Zigbee NCP
 device: MGM240PA32VNN
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"

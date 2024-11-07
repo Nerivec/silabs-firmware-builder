@@ -1,4 +1,4 @@
-name: MGM240P OpenThread RCP
+name: SparkFun MGM240P OpenThread RCP
 device: MGM240PB32VNA
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}_{fw_variant}"

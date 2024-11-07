@@ -1,4 +1,4 @@
-name: ZGA008 Zigbee
+name: Aeotec ZGA008 Zigbee NCP
 device: EFR32MG21A020F1024IM32
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"

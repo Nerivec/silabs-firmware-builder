@@ -1,4 +1,4 @@
-name: SLZB-07Mg24 Zigbee
+name: SMLIGHT SLZB-07MG24 Zigbee NCP
 device: EFR32MG24A020F1024IM40
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"

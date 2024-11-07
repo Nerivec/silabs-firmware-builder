@@ -1,4 +1,4 @@
-name: SLZB-06M Zigbee
+name: SMLIGHT SLZB-06M Zigbee NCP
 device: EFR32MG21A020F768IM32
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"

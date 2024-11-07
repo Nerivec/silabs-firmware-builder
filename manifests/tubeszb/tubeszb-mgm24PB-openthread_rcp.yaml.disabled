@@ -1,4 +1,4 @@
-name: TubesZB MGM24PB Zigbee
+name: TubesZB MGM24PB OpenThread RCP
 device: MGM240PB32VNN
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}"

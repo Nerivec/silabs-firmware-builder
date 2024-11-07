@@ -165,7 +165,9 @@ jobs:
             --output-dir outputs \
             --output gbl \
             --output hex \
-            --output out
+            --output out \
+            --repo-owner "$GITHUB_REPOSITORY_OWNER" \
+            --repo-hash $(git rev-parse --short=8 "$GITHUB_SHA")
 
           # Get the basename of the GBL in `outputs`
           output_basename=$(basename -- $(basename -- $(ls -1 outputs/*.gbl | head -n 1)) .gbl)

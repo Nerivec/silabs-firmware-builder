@@ -255,14 +255,20 @@ def zap_delete_cluster(
 
 def zap_set_cluster_attribute(
     attribute_name: str,
-    default_value: typing.Any,
+    attribute_key: str,
+    attribute_value: typing.Any,
     endpoint_type_name: int | str = "all",
     cluster_name: int | str = "all",
 ) -> list[dict[str, typing.Any]]:
+    # quote str if needed
+    attribute_value = (
+        f'"{attribute_value}"' if isinstance(attribute_value, str) else attribute_value
+    )
+
     return [
         {
             "file": "config/zcl/zcl_config.zap",
-            "jq": f'({zap_select_endpoint_type(endpoint_type_name)}{zap_select_cluster(cluster_name)}.attributes[] | select(.name == "{attribute_name}")).defaultValue = "{default_value}"',
+            "jq": f'({zap_select_endpoint_type(endpoint_type_name)}{zap_select_cluster(cluster_name)}.attributes[] | select(.name == "{attribute_name}")).{attribute_key} = {attribute_value}',
             "skip_if_missing": False,
         }
     ]
@@ -363,6 +369,18 @@ def main():
         dest="keep_slc_daemon",
         default=False,
         help="Do not shut down the SLC daemon after the build",
+    )
+    parser.add_argument(
+        "--repo-owner",
+        type=str,
+        default="github-actions[bot]",
+        help="Owner of the repository that triggered this build",
+    )
+    parser.add_argument(
+        "--repo-hash",
+        type=str,
+        default=get_git_commit_id(pathlib.Path(__file__).parent.parent),
+        help="8-length SHA that triggered this build",
     )
 
     args = parser.parse_args()
@@ -483,13 +501,20 @@ def main():
     with (args.build_dir / "gbl_metadata.yaml").open("w") as f:
         yaml.dump(manifest["gbl"], f)
 
+    # manufacturer name, model id, "Zigbee" or "OpenThread" or "Booloader", "NCP" or "RCP" or "Router" or "none"
+    manifest_meta = manifest["name"].split(" ")
     # Template variables
     value_template_env = {
-        "git_repo_hash": get_git_commit_id(repo=pathlib.Path(__file__).parent.parent),
+        "git_repo_owner": args.repo_owner,
+        "git_repo_hash": args.repo_hash,
         "manifest_name": args.manifest.stem,
         "now": datetime.now(timezone.utc),
         "sdk": sdk,
         "sdk_version": sdk_version,
+        "manufacturer_name": manifest_meta[0],
+        "model_id": manifest_meta[1],
+        "fw_type": manifest_meta[2],
+        "fw_subtype": manifest_meta[3] if len(manifest_meta) > 3 else "none",
     }
 
     LOGGER.info("Using templating env:")
@@ -499,6 +524,36 @@ def main():
     zap_json_config: list[dict[str, typing.Any]] = []
 
     if zap_config:
+        sw_build_id_suffix = zap_config.get(
+            "sw_build_id_suffix", value_template_env["git_repo_owner"]
+        )
+
+        # set some defaults (first, so manifest can override if needed)
+        zap_json_config += zap_set_cluster_attribute(
+            "manufacturer name",
+            "defaultValue",
+            value_template_env["manufacturer_name"][0:32],
+        )
+        zap_json_config += zap_set_cluster_attribute(
+            "model identifier",
+            "defaultValue",
+            value_template_env["model_id"][0:32],
+        )
+        # YYYYMMDD first, per spec
+        zap_json_config += zap_set_cluster_attribute(
+            "date code",
+            "defaultValue",
+            f"{value_template_env['now']:%Y%m%d}{value_template_env['git_repo_hash']}"[
+                0:16
+            ],
+        )
+        # sw build id max 16 bytes, cut off suffix if necessary (expected sdk_version to be max "YYYY.MM.DD")
+        zap_json_config += zap_set_cluster_attribute(
+            "sw build id",
+            "defaultValue",
+            f"{value_template_env['sdk_version']}_{sw_build_id_suffix}"[0:16],
+        )
+
         for endpoint_type in zap_config.get("endpoint_types", []):
             for cluster in endpoint_type.get("clusters", []):
                 for to_remove in cluster.get("remove", []):
@@ -506,12 +561,11 @@ def main():
                         to_remove, endpoint_type["name"]
                     )
 
-                for attribute_name, default_value in cluster.get(
-                    "attribute_defaults", {}
-                ).items():
+                for attribute in cluster.get("set_attribute", []):
                     zap_json_config += zap_set_cluster_attribute(
-                        attribute_name,
-                        expand_template(default_value, value_template_env),
+                        attribute["name"],
+                        attribute["key"],
+                        expand_template(attribute["value"], value_template_env),
                         endpoint_type["name"],
                         cluster["name"],
                     )

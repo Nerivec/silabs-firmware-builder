@@ -1,4 +1,4 @@
-name: ZB-GW04 Bootloader
+name: easyiot ZB-GW04 Bootloader
 device: EFR32MG21A020F768IM32
 base_project: src/bootloader
 filename: "{manifest_name}_{gecko_bootloader_version}"
