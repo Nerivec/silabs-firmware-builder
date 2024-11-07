@@ -310,6 +310,58 @@
           "code": 3,
           "mfgCode": null,
           "define": "IDENTIFY_CLUSTER",
+          "side": "client",
+          "enabled": 1,
+          "commands": [
+            {
+              "name": "IdentifyQueryResponse",
+              "code": 0,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
+              "name": "Identify",
+              "code": 0,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "IdentifyQuery",
+              "code": 1,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 0,
+              "isEnabled": 1
+            }
+          ],
+          "attributes": [
+            {
+              "name": "cluster revision",
+              "code": 65533,
+              "mfgCode": null,
+              "side": "client",
+              "type": "int16u",
+              "included": 1,
+              "storageOption": "RAM",
+              "singleton": 0,
+              "bounded": 0,
+              "defaultValue": "2",
+              "reportable": 0,
+              "minInterval": 1,
+              "maxInterval": 65534,
+              "reportableChange": 0
+            }
+          ]
+        },
+        {
+          "name": "Identify",
+          "code": 3,
+          "mfgCode": null,
+          "define": "IDENTIFY_CLUSTER",
           "side": "server",
           "enabled": 1,
           "commands": [
