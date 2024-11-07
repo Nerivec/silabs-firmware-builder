@@ -31,6 +31,7 @@ component:
   - id: zigbee_application_bootloader
   - id: zigbee_button_joining
   - id: rail_util_rssi
+  - id: zigbee_concentrator
 
 define:
   - name: EMBER_CUSTOM_MAC_FILTER_TABLE_SIZE
