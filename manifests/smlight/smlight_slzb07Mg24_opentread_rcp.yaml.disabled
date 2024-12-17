@@ -2,7 +2,7 @@ name: SMLIGHT SLZB-07MG24 OpenThread RCP
 device: EFR32MG24A020F1024IM40
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}"
-sdk: "simplicity_sdk:2024.6.2"
+sdk: "simplicity_sdk:2024.12.0"
 toolchain: "12.2.1.20221205"
 
 gbl:

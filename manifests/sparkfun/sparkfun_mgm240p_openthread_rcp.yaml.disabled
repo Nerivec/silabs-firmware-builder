@@ -2,7 +2,7 @@ name: SparkFun MGM240P OpenThread RCP
 device: MGM240PB32VNA
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{ot_version}_{baudrate}_{fw_variant}"
-sdk: "simplicity_sdk:2024.6.2"
+sdk: "simplicity_sdk:2024.12.0"
 toolchain: "12.2.1.20221205"
 
 gbl:
