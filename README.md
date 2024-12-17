@@ -24,10 +24,10 @@ Simplicity Studio SDK management workflow and manually manage SDKs:
 1. Clone a specific version of the Simplicity SDK:
    ```bash
    # For macOS
-   mkdir ~/SimplicityStudio/SDKs/simplicity_sdk_2024.6.2
-   cd ~/SimplicityStudio/SDKs/simplicity_sdk_2024.6.2
+   mkdir ~/SimplicityStudio/SDKs/simplicity_sdk_2024.12.0
+   cd ~/SimplicityStudio/SDKs/simplicity_sdk_2024.12.0
 
-   git clone -b v2024.6.2 https://github.com/SiliconLabs/simplicity_sdk .
+   git clone -b v2024.12.0 https://github.com/SiliconLabs/simplicity_sdk .
    git checkout -b branch_tag
    ```
 
@@ -59,8 +59,8 @@ Command line building requires:
 SDK extensions for every SDK you plan to use:
 
 ```bash
-slc signature trust --sdk ~/SimplicityStudio/SDKs/simplicity_sdk_2024.6.2
-slc signature trust --sdk ~/SimplicityStudio/SDKs/simplicity_sdk_2024.6.2 --extension-path ~/SimplicityStudio/SDKs/simplicity_sdk_2024.6.2/extension/nc_efr32_watchdog_extension
+slc signature trust --sdk ~/SimplicityStudio/SDKs/simplicity_sdk_2024.12.0
+slc signature trust --sdk ~/SimplicityStudio/SDKs/simplicity_sdk_2024.12.0 --extension-path ~/SimplicityStudio/SDKs/simplicity_sdk_2024.12.0/extension/nc_efr32_watchdog_extension
 ```
 
 `tools/build_project.py` is the main entry point for building firmwares. Provide paths
