@@ -147,6 +147,12 @@ jobs:
           sdk_args=""
           for sdk_dir in /*_sdk*; do
             sdk_args="$sdk_args --sdk $sdk_dir"
+
+            for patch in "$PWD/sdk_patches"/*.patch
+            do
+                echo "Patching ${patch}"
+                patch -p1 -d "$sdk_dir" < $patch
+            done
           done
 
           # Pass all toolchains as consecutive `--toolchain ...` arguments

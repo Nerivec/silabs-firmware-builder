@@ -1,0 +1,38 @@
+diff --git a/protocol/openthread/platform-abstraction/efr32/radio.c b/protocol/openthread/platform-abstraction/efr32/radio.c
+index 1d3863c2..b6c60d3a 100644
+--- a/protocol/openthread/platform-abstraction/efr32/radio.c
++++ b/protocol/openthread/platform-abstraction/efr32/radio.c
+@@ -3286,14 +3286,14 @@ static void processNextRxPacket(otInstance *aInstance)
+         else
+ #endif // OPENTHREAD_CONFIG_DIAG_ENABLE
+         {
+-            bool isGpPacket = sl_gp_intf_is_gp_pkt(&sReceive.frame);
+-#if OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
++            // bool isGpPacket = sl_gp_intf_is_gp_pkt(&sReceive.frame);
++// #if OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+             // For multipan RCP, continue normal processing.
+-            OT_UNUSED_VARIABLE(isGpPacket);
+-#else
++            // OT_UNUSED_VARIABLE(isGpPacket);
++// #else
+             // Else, we should not receive GP packets.
+-            otEXPECT(!isGpPacket);
+-#endif
++            // otEXPECT(!isGpPacket);
++// #endif
+ 
+ #if OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+             (void)sl_gp_intf_should_buffer_pkt(instance, &sReceive.frame, true);
+@@ -3306,9 +3306,9 @@ static void processNextRxPacket(otInstance *aInstance)
+     railDebugCounters.mRailPlatRadioReceiveDoneCbCount++;
+ #endif
+ 
+-#if !OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+-exit:
+-#endif
++// #if !OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
++// exit:
++// #endif
+     IgnoreError(sl_memory_pool_free(&sRxPacketMemPoolHandle, rxPacketBuf));
+     otSysEventSignalPending();
+ }
