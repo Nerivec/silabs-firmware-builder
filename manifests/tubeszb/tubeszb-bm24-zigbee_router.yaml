@@ -1,5 +1,5 @@
-name: TubesZB MGM24 Zigbee Router
-device: MGM240PA32VNN
+name: TubesZB BM24 Zigbee Router
+device: EFR32MG24A420F1536IM48
 base_project: src/zigbee_router
 filename: "{manifest_name}_{ezsp_version}_{baudrate}_{fw_variant}"
 sdk: "simplicity_sdk:2024.6.2"
@@ -9,9 +9,13 @@ gbl:
   fw_type: zigbee_router
   ezsp_version: dynamic
   baudrate: 115200
-  fw_variant: hw_flow
+  fw_variant: sw_flow
 
 add_components:
+  # Status
+  - id: simple_led
+    instance:
+      - led0
   # BOOT
   - id: simple_button
     instance:
@@ -25,7 +29,7 @@ slcp_defines:
 
 c_defines:
   SL_IOSTREAM_USART_VCOM_BAUDRATE: 115200
-  SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE: usartHwFlowControlCtsAndRts
+  SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE: uartFlowControlSoftware
 
   SL_IOSTREAM_USART_VCOM_PERIPHERAL: USART0
   SL_IOSTREAM_USART_VCOM_PERIPHERAL_NO: 0
@@ -43,6 +47,10 @@ c_defines:
   SL_IOSTREAM_USART_VCOM_RTS_PIN: 8
 
   SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE: 128
+
+  SL_SIMPLE_LED_LED0_POLARITY: SL_SIMPLE_LED_POLARITY_ACTIVE_LOW
+  SL_SIMPLE_LED_LED0_PORT: gpioPortD
+  SL_SIMPLE_LED_LED0_PIN: 2
 
   SL_SIMPLE_BUTTON_BTN1_MODE: SL_SIMPLE_BUTTON_MODE_INTERRUPT
   SL_SIMPLE_BUTTON_BTN1_PORT: gpioPortA

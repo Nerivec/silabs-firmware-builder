@@ -1,5 +1,5 @@
-name: TubesZB MGM24 Bootloader
-device: MGM240PA32VNN
+name: TubesZB BM24 Bootloader
+device: EFR32MG24A420F1536IM48
 base_project: src/bootloader
 filename: "{manifest_name}_{gecko_bootloader_version}"
 sdk: "simplicity_sdk:2024.6.2"
