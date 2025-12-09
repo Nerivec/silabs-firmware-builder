@@ -27,6 +27,23 @@ component:
   # Platform - Enable LTO for gcc by installing the following component
   - id: toolchain_gcc_lto
 
+define:
+  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_CSMA_BACKOFF_ENABLE
+    value: 1
+  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_RETRANSMIT_ENABLE
+    value: 1
+  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_TX_TIMING_ENABLE
+    value: 1
+  ## make OT more reliable in less than ideal RF environment
+  - name: OPENTHREAD_CONFIG_TMF_ADDRESS_QUERY_MAX_RETRY_DELAY
+    value: 120
+  - name: OPENTHREAD_CONFIG_MAC_DEFAULT_MAX_FRAME_RETRIES_DIRECT
+    value: 15
+  - name: OPENTHREAD_CONFIG_MAC_DEFAULT_MAX_FRAME_RETRIES_INDIRECT
+    value: 1
+  - name: OPENTHREAD_CONFIG_MAC_MAX_TX_ATTEMPTS_INDIRECT_POLLS
+    value: 16
+
 configuration:
   - name: SL_MAIN_START_TASK_STACK_SIZE_BYTES
     value: 2752
@@ -69,21 +86,6 @@ configuration:
     value: 256
   - name: OPENTHREAD_CONFIG_LINK_RAW_ENABLE
     value: 1
-  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_CSMA_BACKOFF_ENABLE
-    value: 1
-  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_RETRANSMIT_ENABLE
-    value: 1
-  - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_TX_TIMING_ENABLE
-    value: 1
-  ## make OT more reliable in less than ideal RF environment
-  - name: OPENTHREAD_CONFIG_TMF_ADDRESS_QUERY_MAX_RETRY_DELAY
-    value: 120
-  - name: OPENTHREAD_CONFIG_MAC_DEFAULT_MAX_FRAME_RETRIES_DIRECT
-    value: 15
-  - name: OPENTHREAD_CONFIG_MAC_DEFAULT_MAX_FRAME_RETRIES_INDIRECT
-    value: 1
-  - name: OPENTHREAD_CONFIG_MAC_MAX_TX_ATTEMPTS_INDIRECT_POLLS
-    value: 16
 
 include:
   - path: .
