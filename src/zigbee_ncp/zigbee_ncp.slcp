@@ -31,7 +31,7 @@ component:
   - id: clock_manager
 
 define:
-  - name: EMBER_CUSTOM_MAC_FILTER_TABLE_SIZE
+  - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
     value: 15
 
 configuration:

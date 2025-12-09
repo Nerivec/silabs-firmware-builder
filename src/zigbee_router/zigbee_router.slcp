@@ -34,7 +34,7 @@ component:
   - id: zigbee_concentrator
 
 define:
-  - name: EMBER_CUSTOM_MAC_FILTER_TABLE_SIZE
+  - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
     value: 15
 
 configuration:
@@ -55,7 +55,7 @@ configuration:
   - name: SLI_ZIGBEE_PRIMARY_NETWORK_SECURITY_TYPE
     value: SLI_ZIGBEE_NETWORK_SECURITY_TYPE_3_0
   - name: SL_CLI_PROMPT_STRING
-    value: "\"Z3Router>\""
+    value: '"Z3Router>"'
   - name: NVM3_DEFAULT_NVM_SIZE
     value: 32768
     condition:
