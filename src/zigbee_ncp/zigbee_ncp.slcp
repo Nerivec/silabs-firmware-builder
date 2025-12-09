@@ -3,7 +3,8 @@ label: Zigbee - NCP
 package: zigbee
 category: Zigbee Application
 quality: production
-description: Zigbee NCP firmware optimized for Zigbee2MQTT use.
+description: Zigbee NCP firmware optimized for Zigbee2MQTT use. Derived from the `zigbee_ncp_uart_hw` example Simplicity SDK project.
+author: Nerivec
 
 component:
   - id: sl_main
