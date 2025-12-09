@@ -3,16 +3,24 @@ label: Zigbee - Router
 package: zigbee
 category: Zigbee Application
 quality: production
-description: Zigbee Router firmware. Derived from the `Z3Light` example Simplicity SDK project.
+description: Zigbee Router firmware optimized for Zigbee2MQTT use. Derived from the `zigbee_z3_light` example Simplicity SDK project.
 author: Nerivec
 
 component:
+  - id: sl_main
   - id: iostream_recommended_stream
   - id: iostream_usart
     instance:
       - vcom
+    condition:
+      - device_series_2
+  - id: iostream_eusart
+    instance:
+      - vcom
+    condition:
+      - device_series_3
+  - id: zigbee_debug_basic
   - id: zigbee_debug_print
-  - id: sl_main
   - id: zigbee_pro_stack
   - id: zigbee_source_route
   - id: zigbee_stack_diagnostics
@@ -30,12 +38,21 @@ component:
   - id: zigbee_update_tc_link_key
   - id: clock_manager
   - id: zigbee_application_bootloader
+  # Platform - enable LTO for gcc
+  - id: toolchain_gcc_lto
+  # custom from zigbee_z3_light & zigbee_gp_z3_light_combo
   - id: rail_util_rssi
   - id: zigbee_concentrator
 
 define:
-  - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
-    value: 15
+  # - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
+  #   value: 15
+  - name: SL_ZIGBEE_MULTICAST_TABLE_SIZE
+    value: 26
+  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
+    value: 16
+  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
+    value: 16
 
 configuration:
   - name: SL_BOARD_ENABLE_VCOM
@@ -55,7 +72,7 @@ configuration:
   - name: SLI_ZIGBEE_PRIMARY_NETWORK_SECURITY_TYPE
     value: SLI_ZIGBEE_NETWORK_SECURITY_TYPE_3_0
   - name: SL_CLI_PROMPT_STRING
-    value: '"Z3Router>"'
+    value: '"zigbee_router>"'
   - name: NVM3_DEFAULT_NVM_SIZE
     value: 32768
     condition:
@@ -73,19 +90,133 @@ configuration:
     value: 1024
     condition:
       - freertos
+      - device_series_2
+  - name: SL_STACK_SIZE
+    value: 16384
+    condition:
+      - device_series_3
   - name: SL_STACK_SIZE
     value: 512
     condition:
       - micriumos_kernel
+      - device_series_2
   # Timer RTOS task priority needs to be one more than SL_BT_RTOS_LINK_LAYER_TASK_PRIORITY
   # BT uses event flags that require the timer task to be higher priority than all other RTOS tasks
   - name: configTIMER_TASK_PRIORITY
     value: 53
   - name: configMAX_TASK_NAME_LEN
     value: 30
+  - name: SL_CLI_EXAMPLE_TASK_STACK_SIZE
+    value: 600
+    condition:
+      - cmsis_rtos2
+  # On series 3, the bootloader requires more stack to do context parsing of OTA images
+  - name: SL_CLI_EXAMPLE_TASK_STACK_SIZE
+    value: 1500
+    condition:
+      - device_series_3
+  - name: SL_ZIGBEE_STACK_RTOS_TASK_STACK_SIZE
+    value: 5800
+    condition:
+      - device_series_3
+  - name: SL_ZIGBEE_APP_FRAMEWORK_RTOS_TASK_STACK_SIZE
+    value: 6000
+    condition:
+      - device_series_3
+  # On series 3, IPC for big hdr phy packets requires bigger stack sizes
+  - name: SL_CLI_EXAMPLE_TASK_STACK_SIZE
+    value: 1500
+    condition:
+      - zigbee_high_datarate_phy
+      - device_series_3
+  - name: SL_ZIGBEE_STACK_RTOS_TASK_STACK_SIZE
+    value: 5800
+    condition:
+      - zigbee_high_datarate_phy
+      - device_series_3
+  - name: SL_ZIGBEE_APP_FRAMEWORK_RTOS_TASK_STACK_SIZE
+    value: 6000
+    condition:
+      - zigbee_high_datarate_phy
+      - device_series_3
+  - name: SL_HDR_PHY_MAX_PACKET_SIZE
+    value: 2045
+    condition:
+      - zigbee_high_datarate_phy
+      - device_series_3
+  - name: SL_ZIGBEE_AF_PLUGIN_ZCL_CLUSTER_DEFER_ATTRIBUTE_WRITES_TO_NVM_MS
+    value: 2000
+    condition:
+      - device_series_3
+  # custom from zigbee_z3_light & zigbee_gp_z3_light_combo
+  - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
+    value: 64
+  - name: SL_ZIGBEE_BROADCAST_TABLE_SIZE
+    value: 30
+  - name: SL_ZIGBEE_NEIGHBOR_TABLE_SIZE
+    value: 26
+  - name: SL_ZIGBEE_BINDING_TABLE_SIZE
+    value: 32
+  - name: SL_ZIGBEE_GP_PROXY_TABLE_SIZE
+    value: 10
+  - name: SL_ZIGBEE_KEY_TABLE_SIZE
+    value: 1
+  - name: SL_ZIGBEE_SOURCE_ROUTE_TABLE_SIZE
+    value: 254
+  - name: SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_CHANNEL_MASK
+    value: 0x07fff800 # all zigbee channels
+  - name: SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_RADIO_TX_POWER
+    value: 19
+  - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_CONCENTRATOR_TYPE
+    value: HIGH_RAM_CONCENTRATOR
+  - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_MIN_TIME_BETWEEN_BROADCASTS_SECONDS
+    value: 30 # <1-60>
+  - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_MAX_TIME_BETWEEN_BROADCASTS_SECONDS
+    value: 180 # <30-300>
+  - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_ROUTE_ERROR_THRESHOLD
+    value: 3 # <1-100>
+  - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_DELIVERY_FAILURE_THRESHOLD
+    value: 1 # <1-100>
+  ## xg21
+  - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
+    value: 32
+    condition: ["device_generic_family_efr32xg21"]
+  - name: SL_ZIGBEE_APS_UNICAST_MESSAGE_COUNT
+    value: 64
+    condition: ["device_generic_family_efr32xg21"]
+  - name: SL_ZIGBEE_MAX_END_DEVICE_CHILDREN
+    value: 32
+    condition: ["device_generic_family_efr32xg21"]
+  ## xg24
+  - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
+    value: 64
+    condition: ["device_generic_family_efr32xg24"]
+  - name: SL_ZIGBEE_APS_UNICAST_MESSAGE_COUNT
+    value: 128
+    condition: ["device_generic_family_efr32xg24"]
+  - name: SL_ZIGBEE_MAX_END_DEVICE_CHILDREN
+    value: 64
+    condition: ["device_generic_family_efr32xg24"]
+  - name: SL_ZIGBEE_APS_DUPLICATE_REJECTION_MAX_ENTRIES
+    value: 64
+    condition: ["device_generic_family_efr32xg24"]
+  ## xg26
+  - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
+    value: 64
+    condition: ["device_generic_family_efr32xg26"]
+  - name: SL_ZIGBEE_APS_UNICAST_MESSAGE_COUNT
+    value: 128
+    condition: ["device_generic_family_efr32xg26"]
+  - name: SL_ZIGBEE_MAX_END_DEVICE_CHILDREN
+    value: 64
+    condition: ["device_generic_family_efr32xg26"]
+  - name: SL_ZIGBEE_APS_DUPLICATE_REJECTION_MAX_ENTRIES
+    value: 64
+    condition: ["device_generic_family_efr32xg26"]
 
 source:
   - path: main.c
+    unless: [cmsis_rtos2]
   - path: app.c
 
 config_file:
@@ -95,6 +226,15 @@ config_file:
 
 include:
   - path: ./
+
+# Use CUSTOM_TOKEN_HEADER macro to point to custom token definitions (optional)
+# - name: "CUSTOM_TOKEN_HEADER"
+#    value: "\"example_custom_tokens.h\""
+
+# Use CUSTOM_MFG_TOKEN_HEADER macro to point to custom manufacturing token
+# definitions (optional)
+# - name: "CUSTOM_MFG_TOKEN_HEADER"
+#    value: "\"example_custom_mfg_tokens.h\""
 
 filter:
   - name: Wireless Technology
