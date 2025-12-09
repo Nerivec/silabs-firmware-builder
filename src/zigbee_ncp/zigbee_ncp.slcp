@@ -38,8 +38,24 @@ component:
   - id: rail_util_rssi
 
 define:
-  - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
-    value: 15
+  # - name: SL_ZIGBEE_CUSTOM_MAC_FILTER_TABLE_SIZE
+  #   value: 15
+  - name: SL_ZIGBEE_MULTICAST_TABLE_SIZE
+    value: 26
+  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
+    value: 16
+  ## xg21
+  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
+    value: 8
+    condition: ["device_generic_family_efr32xg21"]
+  ## xg24
+  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
+    value: 16
+    condition: ["device_generic_family_efr32xg24"]
+  ## xg26
+  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
+    value: 16
+    condition: ["device_generic_family_efr32xg26"]
 
 configuration:
   - name: SL_BOARD_ENABLE_VCOM
@@ -90,10 +106,6 @@ configuration:
   # custom from zigbee_ncp_uart_hw
   - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
     value: 128
-  - name: SL_ZIGBEE_MULTICAST_TABLE_SIZE
-    value: 26
-  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
-    value: 16
   - name: SL_ZIGBEE_BROADCAST_TABLE_SIZE
     value: 30
   - name: SL_ZIGBEE_NEIGHBOR_TABLE_SIZE
@@ -105,9 +117,6 @@ configuration:
   - name: SL_ZIGBEE_KEY_TABLE_SIZE
     value: 1
   ## xg21
-  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
-    value: 8
-    condition: ["device_generic_family_efr32xg21"]
   - name: SL_ZIGBEE_SOURCE_ROUTE_TABLE_SIZE
     value: 200
     condition: ["device_generic_family_efr32xg21"]
@@ -121,9 +130,6 @@ configuration:
     value: 32
     condition: ["device_generic_family_efr32xg21"]
   ## xg24
-  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
-    value: 16
-    condition: ["device_generic_family_efr32xg24"]
   - name: SL_ZIGBEE_SOURCE_ROUTE_TABLE_SIZE
     value: 254
     condition: ["device_generic_family_efr32xg24"]
@@ -140,9 +146,6 @@ configuration:
     value: 64
     condition: ["device_generic_family_efr32xg24"]
   ## xg26
-  - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
-    value: 16
-    condition: ["device_generic_family_efr32xg26"]
   - name: SL_ZIGBEE_SOURCE_ROUTE_TABLE_SIZE
     value: 254
     condition: ["device_generic_family_efr32xg26"]
