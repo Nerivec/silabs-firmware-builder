@@ -6,6 +6,10 @@ on:
       manifest_glob:
         description: "Manifest glob"
         required: false
+      debug:
+        type: boolean
+        description: "Output build data to artifacts"
+        required: false
   release:
     types:
       - published
@@ -166,6 +170,7 @@ jobs:
             $toolchain_args \
             --manifest "${{ matrix.manifest }}" \
             --build-dir build \
+            --no-clean-build-dir \
             --build-system makefile \
             --output-dir outputs \
             --output gbl \
@@ -183,6 +188,14 @@ jobs:
         run: |
           curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | bash -s 20
           apt-get install -y nodejs
+
+      - uses: actions/upload-artifact@v5
+        if: ${{ inputs.debug }}
+        with:
+          name: build_dir_${{ steps.build-firmware.outputs.output_basename }}
+          path: build/*
+          compression-level: 9
+          include-hidden-files: true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v5

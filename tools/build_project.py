@@ -599,8 +599,6 @@ def main():
         with open(json_path, "wb") as f:
             f.write(result.stdout)
 
-    log_tree(build_template_path)
-
     # Next, generate a chip-specific project from the modified base project
     LOGGER.info(f"Generating project for {manifest['device']}")
 
