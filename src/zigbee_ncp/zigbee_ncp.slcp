@@ -113,8 +113,6 @@ configuration:
     value: 26
   - name: SL_ZIGBEE_BINDING_TABLE_SIZE
     value: 32
-  - name: SL_ZIGBEE_GP_PROXY_TABLE_SIZE
-    value: 10
   - name: SL_ZIGBEE_KEY_TABLE_SIZE
     value: 1
   ## xg21
