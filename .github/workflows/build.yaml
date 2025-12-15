@@ -189,7 +189,7 @@ jobs:
           curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | bash -s 20
           apt-get install -y nodejs
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: ${{ inputs.debug }}
         with:
           name: build_dir_${{ steps.build-firmware.outputs.output_basename }}
@@ -198,7 +198,7 @@ jobs:
           include-hidden-files: true
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: firmware-build-${{ steps.build-firmware.outputs.output_basename }}
           path: outputs/*
