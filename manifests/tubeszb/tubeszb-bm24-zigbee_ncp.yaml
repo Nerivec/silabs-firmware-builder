@@ -8,7 +8,7 @@ toolchain: "12.2.1.20221205"
 gbl:
   fw_type: zigbee_ncp
   ezsp_version: dynamic
-  baudrate: 115200
+  baudrate: 460800
   fw_variant: hw_flow
 
 add_components:
@@ -18,7 +18,7 @@ add_components:
       - board_activity
 
 c_defines:
-  SL_IOSTREAM_EUSART_VCOM_BAUDRATE: 115200
+  SL_IOSTREAM_EUSART_VCOM_BAUDRATE: 460800
   SL_IOSTREAM_EUSART_VCOM_FLOW_CONTROL_TYPE: SL_IOSTREAM_EUSART_UART_FLOW_CTRL_CTS_RTS
 
   SL_IOSTREAM_EUSART_VCOM_PERIPHERAL: EUSART0
