@@ -120,7 +120,7 @@ jobs:
           df -h
       - name: Build and Push
         if: needs.check-container.outputs.build_image == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile
