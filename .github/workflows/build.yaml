@@ -102,7 +102,7 @@ jobs:
         if: needs.check-container.outputs.build_image == 'true'
       - name: Log in to the GitHub container registry
         if: needs.check-container.outputs.build_image == 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
