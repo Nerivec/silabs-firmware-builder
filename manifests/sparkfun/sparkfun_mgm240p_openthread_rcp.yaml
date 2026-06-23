@@ -2,8 +2,8 @@ name: SparkFun MGM240P OpenThread RCP
 device: MGM240PB32VNA
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"
-sdk: "simplicity_sdk:2025.12.3"
-toolchain: "12.2.1.20221205"
+sdk: "simplicity_sdk:2026.6.0"
+toolchain: "gcc:14.2.1"
 
 gbl:
   fw_type: openthread_rcp
@@ -32,3 +32,6 @@ c_defines:
   SL_CLOCK_MANAGER_HFXO_CTUNE: 140
 
   SL_RAIL_UTIL_RSSI_OFFSET: 0
+
+sdk_patches:
+  - enable-greenpower-without-multipan.patch

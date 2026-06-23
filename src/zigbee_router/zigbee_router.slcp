@@ -9,7 +9,7 @@ author: Nerivec
 sdk:
   vendor: silabs
   id: simplicity_sdk
-  version: 2025.12.3
+  version: 2026.6.0
 toolchain_settings: []
 
 sdk_extension:
@@ -22,112 +22,53 @@ sdk_extension:
 
 component:
   - id: sl_main
-    package: simplicity_sdk
-    vendor: silabs
   - id: iostream_recommended_stream
-    package: simplicity_sdk
-    vendor: silabs
   - id: iostream_usart
-    package: simplicity_sdk
-    vendor: silabs
     instance:
       - vcom
     condition:
       - device_generic_family_efr32xg21
   - id: iostream_eusart
-    package: simplicity_sdk
-    vendor: silabs
     instance:
       - vcom
     condition:
       - device_has_eusart
   - id: zigbee_debug_basic
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_debug_print
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_pro_stack
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_source_route
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_stack_diagnostics
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_gp
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_zcl_framework_core
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_identify
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_counters
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_green_power_common
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_green_power_client
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_interpan
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_network_steering
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_reporting
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_basic
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_scan_dispatch
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_update_tc_link_key
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_update_app_link_key
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_security_link_keys
-    package: simplicity_sdk
-    vendor: silabs
   - id: clock_manager
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_dynamic_commissioning
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_trust_center_keepalive
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_poll_control_client
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_bdb_3dot1_rejoin_algorithm
-    package: simplicity_sdk
-    vendor: silabs
   # - id: zigbee_bdb_3dot1_trust_center_extension
   - id: zigbee_application_bootloader
-    package: simplicity_sdk
-    vendor: silabs
-  # Platform - enable LTO for gcc
+  # Platform - enable LTO for gcc and llvm
   - id: toolchain_gcc_lto
-    package: simplicity_sdk
-    vendor: silabs
+    condition:
+      - toolchain_gcc
+  - id: toolchain_llvm_lto
+    condition:
+      - toolchain_llvm
   # custom from zigbee_z4_light & zigbee_gp_z3_light_combo
   - id: rail_util_rssi
-    package: simplicity_sdk
-    vendor: silabs
   - id: zigbee_concentrator
-    package: simplicity_sdk
-    vendor: silabs
   - id: router_eui64_unique
     package: router_eui64_unique
     vendor: nabucasa
@@ -140,18 +81,6 @@ define:
   #   value: 15
   - name: SL_ZIGBEE_MULTICAST_TABLE_SIZE
     value: 26
-  ## xg21
-  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
-    value: 200
-    condition: ["device_generic_family_efr32xg21"]
-  ## xg24
-  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
-    value: 254
-    condition: ["device_generic_family_efr32xg24"]
-  ## xg26
-  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
-    value: 254
-    condition: ["device_generic_family_efr32xg26"]
   - name: SL_ZIGBEE_DISCOVERY_TABLE_SIZE
     value: 16
 
@@ -255,7 +184,7 @@ configuration:
     value: 1
   - name: SL_ZIGBEE_AF_PLUGIN_TRUST_CENTER_KEEPALIVE_DEFAULT_JITTER_PERIOD_SECONDS
     value: 30
-  # custom from zigbee_z3_light & zigbee_gp_z3_light_combo
+  # custom from zigbee_z4_light & zigbee_gp_z3_light_combo
   - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
     value: 64
     condition:
@@ -291,6 +220,9 @@ configuration:
   - name: SL_ZIGBEE_AF_PLUGIN_CONCENTRATOR_DELIVERY_FAILURE_THRESHOLD
     value: 1 # <1-100>
   ## xg21
+  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
+    value: 200
+    condition: ["device_generic_family_efr32xg21"]
   - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
     value: 32
     condition: ["device_generic_family_efr32xg21"]
@@ -301,6 +233,9 @@ configuration:
     value: 32
     condition: ["device_generic_family_efr32xg21"]
   ## xg24
+  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
+    value: 254
+    condition: ["device_generic_family_efr32xg24"]
   - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
     value: 128
     condition: ["device_generic_family_efr32xg24"]
@@ -314,6 +249,9 @@ configuration:
     value: 64
     condition: ["device_generic_family_efr32xg24"]
   ## xg26
+  - name: SL_ZIGBEE_ROUTE_TABLE_SIZE
+    value: 254
+    condition: ["device_generic_family_efr32xg26"]
   - name: SL_ZIGBEE_ADDRESS_TABLE_SIZE
     value: 128
     condition: ["device_generic_family_efr32xg26"]
@@ -329,10 +267,12 @@ configuration:
 
 source:
   - path: main.c
+    unless: [cmsis_rtos2]
   - path: app.c
 
 config_file:
   - path: config/zcl/zcl_config.zap
+    file_id: zap_configuration_file_id
     directory: zcl
 
 # Use CUSTOM_TOKEN_HEADER macro to point to custom token definitions (optional)

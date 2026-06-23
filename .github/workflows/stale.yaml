@@ -1,11 +1,24 @@
----
-name: Stale
-
+name: "Close stale issues and PRs"
 on:
   schedule:
-    - cron: "40 5 * * *"
-  workflow_dispatch:
+    - cron: "30 4 * * *"
+
+permissions:
+  contents: read
 
 jobs:
-  workflows:
-    uses: home-assistant/actions/.github/workflows/stale.yaml@master
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      # contents: write # only for delete-branch option
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        with:
+          stale-issue-message: "This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days."
+          stale-pr-message: "This pull request is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days."
+          days-before-stale: 30
+          days-before-close: 5
+          exempt-issue-labels: dont-stale
+          exempt-pr-labels: dont-stale

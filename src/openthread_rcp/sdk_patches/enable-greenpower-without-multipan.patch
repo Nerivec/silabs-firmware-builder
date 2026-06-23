@@ -1,0 +1,43 @@
+diff --git a/openthread/platform-abstraction/efr32/radio.cpp b/openthread/platform-abstraction/efr32/radio.cpp
+index e1bb1c93..2f6d88da 100644
+--- a/openthread/platform-abstraction/efr32/radio.cpp
++++ b/openthread/platform-abstraction/efr32/radio.cpp
+@@ -1494,14 +1494,12 @@ otError otPlatRadioTransmit(otInstance *aInstance, otRadioFrame *aFrame)
+ 
+     otEXPECT_ACTION(sl_ot_rtos_task_can_access_pal(), error = OT_ERROR_REJECTED);
+ 
+-#if OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+     // Accept GP packets even if radio is not in required state.
+     if ((sl_gp_intf_get_state() != SL_GP_STATE_SEND_RESPONSE) && sl_gp_intf_should_buffer_pkt(aInstance, aFrame, false))
+     {
+         sl_gp_intf_buffer_pkt(aInstance);
+     }
+     else
+-#endif
+     {
+         OT_ASSERT(txBufIndex < RADIO_REQUEST_BUFFER_COUNT);
+         OT_ASSERT(aFrame == &sTransmitBuffer[txBufIndex].frame);
+@@ -2624,23 +2622,13 @@ static void deliverRxPacketToInstance(otInstance *aInstance)
+     sReceive.frame.mInfo.mRxInfo.mAckFrameCounter = sli_ot_radio_security_get_ack_frame_counter(aInstance);
+ #endif
+ 
+-#if OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+     sl_gp_intf_should_buffer_pkt(aInstance, &sReceive.frame, true);
+-#else
+-    bool isGpPacket = sl_gp_intf_is_gp_pkt(&sReceive.frame);
+-    otEXPECT(!isGpPacket);
+-#endif
+ 
+     otPlatRadioReceiveDone(aInstance, &sReceive.frame, sReceiveError);
+ 
+ #if RADIO_CONFIG_DEBUG_COUNTERS_SUPPORT
+     railDebugCounters.mRailPlatRadioReceiveDoneCbCount++;
+ #endif
+-
+-#if !OPENTHREAD_CONFIG_MULTIPAN_RCP_ENABLE
+-exit:
+-    return;
+-#endif
+ }
+ 
+ #if OPENTHREAD_CONFIG_MULTIPLE_INSTANCE_ENABLE

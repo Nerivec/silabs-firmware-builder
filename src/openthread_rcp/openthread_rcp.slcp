@@ -9,49 +9,34 @@ author: Nerivec
 sdk:
   vendor: silabs
   id: simplicity_sdk
-  version: 2025.12.3
+  version: 2026.6.0
 toolchain_settings: []
 
 component:
   - id: sl_main
-    package: simplicity_sdk
-    vendor: silabs
   - id: ot_stack_rcp
-    package: simplicity_sdk
-    vendor: silabs
   - id: ot_crash_handler
-    package: simplicity_sdk
-    vendor: silabs
   - id: iostream_usart
-    package: simplicity_sdk
-    vendor: silabs
     instance:
       - vcom
     condition:
       - device_generic_family_efr32xg21
   - id: iostream_eusart
-    package: simplicity_sdk
-    vendor: silabs
     instance:
       - vcom
     condition:
       - device_has_eusart
   - id: rail_util_pti
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_interface
-    package: simplicity_sdk
-    vendor: silabs
   - id: clock_manager
-    package: simplicity_sdk
-    vendor: silabs
   - id: ot_reset_utils
-    package: simplicity_sdk
-    vendor: silabs
-  # Platform - Enable LTO for gcc by installing the following component
+  # Platform - Enable LTO for gcc and llvm by installing the following component
   - id: toolchain_gcc_lto
-    package: simplicity_sdk
-    vendor: silabs
+    condition:
+      - toolchain_gcc
+  - id: toolchain_llvm_lto
+    condition:
+      - toolchain_llvm
 
 define:
   - name: OPENTHREAD_CONFIG_MAC_SOFTWARE_CSMA_BACKOFF_ENABLE

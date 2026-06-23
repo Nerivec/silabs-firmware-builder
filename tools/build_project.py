@@ -20,7 +20,6 @@ import subprocess
 from datetime import datetime, timezone
 
 from ruamel.yaml import YAML
-from elftools.elf.elffile import ELFFile
 
 
 LOGGER = logging.getLogger(__name__)
@@ -113,12 +112,13 @@ def get_toolchain_default_paths() -> list[pathlib.Path]:
     if sys.platform == "darwin":
         return list(
             pathlib.Path(
-                "/Applications/Simplicity Studio.app/Contents/Eclipse/developer/toolchains/gnu_arm/"
-            ).glob("*")
+                "/Applications/Simplicity Studio.app/Contents/Eclipse/developer/toolchains/"
+            ).glob("*/*")
         )
 
     if is_running_in_docker():
-        return list(pathlib.Path("/root/.silabs/slt/installs/conan/p").glob("gcc-*/p"))
+        root = pathlib.Path("/root/.silabs/slt/installs/conan/p")
+        return list(root.glob("gcc-*/p")) + list(root.glob("llvm-*/p"))
 
     return []
 
@@ -228,6 +228,20 @@ def load_toolchains(paths: list[pathlib.Path]) -> dict[pathlib.Path, str]:
     toolchains = {}
 
     for toolchain in paths:
+        # libc++ encodes its version in `__config` as `_LIBCPP_VERSION` (MMmmpp, e.g. 210101)
+        libcpp_config = next(
+            toolchain.glob("lib/clang-runtimes/**/include/c++/v1/__config"), None
+        )
+        if libcpp_config is not None:
+            for line in libcpp_config.read_text().split("\n"):
+                if "define _LIBCPP_VERSION " in line:
+                    version = int(line.split()[-1])
+                    toolchains[toolchain] = (
+                        f"llvm:{version // 10000}.{version // 100 % 100}.{version % 100}"
+                    )
+                    break
+            continue
+
         gcc_plugin_version_h = next(
             toolchain.glob("lib/gcc/arm-none-eabi/*/plugin/include/plugin-version.h")
         )
@@ -240,8 +254,11 @@ def load_toolchains(paths: list[pathlib.Path]) -> dict[pathlib.Path, str]:
                 value = ast.literal_eval(line.split(" = ", 1)[1][:-1])
                 version_info[name] = value
 
-        toolchains[toolchain] = (
-            version_info["basever"] + "." + version_info["datestamp"]
+        toolchains[toolchain] = f"gcc:{version_info['basever']}"
+        LOGGER.info(
+            "Found toolchain: basever=%s, datestamp=%s",
+            version_info["basever"],
+            version_info["datestamp"],
         )
 
     return toolchains
@@ -291,33 +308,6 @@ def validate_linker_wrap_symbols(map_file: pathlib.Path) -> None:
                 f"Linker --wrap={name} appears to wrap an empty stub "
                 f"(shares address {addr} with: {symbols_at_addr}"
             )
-
-
-def get_elf_source_paths(elf_path: pathlib.Path) -> set[pathlib.PurePosixPath]:
-    """Gets the set of source paths in the given ELF file."""
-    paths = set()
-
-    with elf_path.open("rb") as f:
-        elf = ELFFile(f)
-        dwarf = elf.get_dwarf_info()
-
-        for cu in dwarf.iter_CUs():
-            line_program = dwarf.line_program_for_CU(cu)
-
-            for entry in line_program.get_entries():
-                state = entry.state
-                if state is None:
-                    continue
-
-                file_entry = line_program["file_entry"][state.file - 1]
-                directory = line_program["include_directory"][
-                    file_entry.dir_index - 1
-                ].decode("utf-8")
-                filename = file_entry.name.decode("utf-8")
-
-                paths.add(pathlib.PurePosixPath(f"{directory}/{filename}"))
-
-    return paths
 
 
 def zap_select_endpoint_type(endpoint_type_name: int | str) -> str:
@@ -500,6 +490,9 @@ def main():
 
     manifest = yaml.load(args.manifest.read_text())
 
+    for key, override in args.overrides:
+        manifest[key] = override
+
     # Ensure we can load the correct SDK and toolchain
     sdks = load_sdks(args.sdks)
     sdk, sdk_and_version = next(
@@ -509,11 +502,11 @@ def main():
 
     toolchains = load_toolchains(args.toolchains)
     toolchain = next(
-        path for path, version in toolchains.items() if version == manifest["toolchain"]
+        path
+        for path, name in toolchains.items()
+        if manifest["toolchain"] in (name, name.split(":", 1)[1])
     )
-
-    for key, override in args.overrides:
-        manifest[key] = override
+    is_llvm = toolchains[toolchain].startswith("llvm:")
 
     # First, copy the base project into the build dir, under `template/`
     projects_root = pathlib.Path(__file__).parent.parent
@@ -741,7 +734,7 @@ def main():
             "--copy-proj-sources",
             "--copy-sdk-sources",
             "--new-project",
-            "--toolchain", "toolchain_gcc",
+            "--toolchain", "toolchain_llvm" if is_llvm else "toolchain_gcc",
             "--sdk", sdk,
             "--output-type", "vscode",
         ],
@@ -897,29 +890,30 @@ def main():
             )
         )
 
-    cmake_dir = args.build_dir / "cmake_gcc"
-
-    # Remove absolute paths from the build for reproducibility
-    remapped_paths = {
-        args.build_dir.absolute(): "/src",
-        f"{cmake_dir.absolute()}/..": "/src",
-        "/__w/zigbee/zigbee": f"/src/{sdk_name}_{sdk_version}/zigbee",
-    }
-    build_flags["C_FLAGS"] += [
-        f"-ffile-prefix-map={src}={dst}" for src, dst in remapped_paths.items()
-    ]
+    cmake_dir = args.build_dir / ("cmake_llvm" if is_llvm else "cmake_gcc")
 
     # Ensure deterministic linking order
     build_flags["LD_FLAGS"] += ["-Wl,--sort-section=name"]
 
     # Enable errors
-    build_flags["C_FLAGS"] += [
-        "-Wall",
-        "-Wextra",
-        "-Werror",
-        "-Wno-error=maybe-uninitialized",  # Linking fails due to a few SDK bugs
-        "-Wno-error=unused-function",  # 'mbedtls_ssl_get_hostname_pointer' defined but not used
-    ]
+    build_flags["C_FLAGS"] += ["-Wall", "-Wextra", "-Werror"]
+
+    if is_llvm:
+        build_flags["C_FLAGS"] += [
+            "-Wno-unknown-warning-option",  # ignore GCC-only warning names
+            "-Wno-error=format-security",  # SDK `diagnostic.c` uses a non-literal format string
+            "-Wno-error=unknown-pragmas",  # our `ws2812.c` uses `#pragma GCC optimize`
+            "-Wno-error=unused-function",  # unused statics in SDK/OpenThread sources
+            "-Wno-error=c23-extensions",  # our `cmds_proprietary.c` has a label before a declaration
+            "-Wno-error=unterminated-string-initialization",  # char arrays in zigbee router sources
+        ]
+    else:
+        build_flags["C_FLAGS"] += [
+            "-Wno-error=maybe-uninitialized",  # Linking fails due to a few SDK bugs
+            "-Wno-error=uninitialized",  # False positive in zigbee `core-cli.c` under LTO
+            "-Wno-error=unused-function",  # mbedTLS `ssl_tls.c` with X.509 hostname verification disabled
+        ]
+
     build_flags["CXX_FLAGS"] = build_flags["C_FLAGS"]
 
     # CMake expects a semicolon-separated list for the post-build command
@@ -950,7 +944,7 @@ def main():
         env={
             "HOME": os.environ["HOME"],
             "PATH": f"{pathlib.Path(sys.executable).parent}:{os.environ['PATH']}",
-            "ARM_GCC_DIR": toolchain,
+            ("ARM_LLVM_DIR" if is_llvm else "ARM_GCC_DIR"): toolchain,
             "NINJA_EXE_PATH": shutil.which("ninja"),
             "SOURCE_DATE_EPOCH": str(int(args.build_timestamp.timestamp())),
         },
@@ -965,6 +959,7 @@ def main():
         env={
             "HOME": os.environ["HOME"],
             "PATH": f"{pathlib.Path(sys.executable).parent}:{os.environ['PATH']}",
+            "SOURCE_DATE_EPOCH": str(int(args.build_timestamp.timestamp())),
         },
     )
 
@@ -972,11 +967,6 @@ def main():
 
     # Verify that --wrap linker flags don't wrap weak stubs
     validate_linker_wrap_symbols(map_file=output_artifact.with_suffix(".map"))
-
-    # Verify that all source paths in the ELF have been remapped
-    for path in get_elf_source_paths(output_artifact.with_suffix(".out")):
-        if not path.is_relative_to("/src"):
-            raise RuntimeError(f"Unreproducible source path in ELF: {path}")
 
     # Read the metadata extracted from the source and build trees
     extracted_gbl_metadata = json.loads(

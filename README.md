@@ -7,6 +7,7 @@
 This repository contains building tools and firmware releases for the most common ZigBee adapters.
 
 It uses the Silicon Labs Simplicity SDK and proprietary Silicon Labs tools such as the Silicon Labs Configurator (slc) and the Simplicity Commander standalone utility.
+https://docs.silabs.com/sisdk-release-notes/2026.6.0/sisdk-release-notes-overview/
 
 ## Flashing
 

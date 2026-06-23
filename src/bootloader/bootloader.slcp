@@ -10,7 +10,7 @@ description: >
 sdk:
   vendor: silabs
   id: simplicity_sdk
-  version: 2025.12.3
+  version: 2026.6.0
 toolchain_settings: []
 
 category: Example|Bootloader
@@ -24,38 +24,16 @@ filter:
 
 component:
   - id: bootloader_core
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_crc
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_aes_sha_ecdsa
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_delay_driver
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_gpio_activation
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_image_parser
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_token_management
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_serial_driver
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_xmodem_parser
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_uart_xmodem
-    package: simplicity_sdk
-    vendor: silabs
   - id: bootloader_debug
-    package: simplicity_sdk
-    vendor: silabs
 
 configuration:
   - name: SL_VCOM_ENABLE

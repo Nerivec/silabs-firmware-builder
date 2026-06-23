@@ -2,7 +2,7 @@
 FROM debian:trixie-slim AS python-venv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/bin/
 COPY requirements.txt /tmp/
-RUN UV_PYTHON_INSTALL_DIR=/opt/pythons uv venv -p 3.13 /opt/venv --no-cache \
+RUN UV_PYTHON_INSTALL_DIR=/opt/pythons uv venv -p 3.14 /opt/venv --no-cache \
     && uv pip install --python /opt/venv -r /tmp/requirements.txt
 
 # Install slt and all toolchain packages
@@ -28,23 +28,21 @@ RUN set -e \
 # Install toolchain via slt
 RUN set -e \
     && apt-get update && apt-get install -y --no-install-recommends jq && rm -rf /var/lib/apt/lists/* \
+    # https://updates.silabs.com/studio/v6/updates/update_site/manifest.zip
     && slt --non-interactive install \
         cmake/3.30.2 \
         ninja/1.12.1 \
-        commander/1.22.0 \
-        slc-cli/6.0.15 \
-        simplicity-sdk/2025.12.3 \
-        zap/2025.12.02 \
-    # Patch ZAP apack.json to add missing linux.aarch64 executable definitions
-    # Remove once zap is bumped to 2026.x.x
-    && ZAP_PATH="$(slt where zap)" \
-    && jq '.executable["zap:linux.aarch64"]     = {"exe": "zap",     "optional": true} \
-         | .executable["zap-cli:linux.aarch64"] = {"exe": "zap-cli", "optional": true}' \
-        "$ZAP_PATH/apack.json" > /tmp/apack.json && mv /tmp/apack.json "$ZAP_PATH/apack.json" \
+        commander/1.24.1 \
+        slc-cli/6.0.22 \
+        simplicity-sdk/2026.6.0 \
+        zap/2026.06.17 \
+    # Unused, remove to save space
+    && slt --non-interactive uninstall --force llvm-arm-toolchain-for-embedded \
     # Clean up download caches to reduce image size
     && rm -rf /root/.silabs/slt/installs/archive/*.zip \
               /root/.silabs/slt/installs/archive/*.tar.* \
               /root/.silabs/slt/installs/conan/p/*/d/ \
+              /root/.silabs/slt/installs/conan/download_cache \
     # Create stable symlinks and wrappers to make the tools available in PATH
     && mkdir -p /root/.silabs/slt/bin \
     && ln -s "$(slt where java21)/jre/bin/java" /root/.silabs/slt/bin/java \
@@ -74,7 +72,9 @@ RUN set -e \
        libpng16-16 \
        libpcre2-16-0 \
        libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    # Fix git permission error when building locally
+    && git config --global --add safe.directory '*'
 
 # Copy from parallel stages
 COPY --from=python-venv /opt/pythons /opt/pythons
