@@ -1,10 +1,15 @@
 # Silicon Labs ZigBee firmware builder repository
 
 > [!IMPORTANT]
-> Builds here are updated fairly fast after new changes/releases, hence, you can consider them somewhat similar to the difference between Zigbee2MQTT "normal" branch, and dev/edge branch.
-> Builds also purposely focus on the main needs of each firmware type (no cosmetic extras).
+> `Pre-release` builds are updated fairly fast after new SDK releases.
+> `Latest` builds usually come after a `Pre-release` has been available for a while and no issue is pending.
+>
+> Builds also purposely focus on the main needs of each firmware type (no unnecessary extras).
 
-This repository contains building tools and firmware releases for the most common ZigBee adapters.
+> [!TIP]
+> [Starting with SDK v2026.6.0](https://docs.silabs.com/sisdk-release-notes/2026.6.0/sisdk-release-notes-overview/#release-announcement), Silabs is considering June releases (`vyyyy.6.p`) as LTS ("recommended baseline for production" - 30-month maintenance), and December releases (`vyyyy.12.p`) as Interim ("for prototyping, early feature access, and development work" - 6-month maintenance).
+
+This repository contains building tools and firmware releases for the most common Zigbee and OpenThread Silabs adapters.
 
 It uses the Silicon Labs Simplicity SDK and proprietary Silicon Labs tools such as the Silicon Labs Configurator (slc) and the Simplicity Commander standalone utility.
 https://docs.silabs.com/sisdk-release-notes/2026.6.0/sisdk-release-notes-overview/
