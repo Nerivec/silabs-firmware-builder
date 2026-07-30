@@ -12,6 +12,7 @@ ARG TARGETARCH
 # Set up slt and conan
 RUN set -e \
     && apt-get update && apt-get install -y --no-install-recommends \
+        jq \
         aria2 \
         ca-certificates \
         # Required by conan
@@ -27,14 +28,13 @@ RUN set -e \
 
 # Install toolchain via slt
 RUN set -e \
-    && apt-get update && apt-get install -y --no-install-recommends jq && rm -rf /var/lib/apt/lists/* \
     # https://updates.silabs.com/studio/v6/updates/update_site/manifest.zip
     && slt --non-interactive install \
         cmake/3.30.2 \
         ninja/1.12.1 \
-        commander/1.24.1 \
-        slc-cli/6.0.22 \
-        simplicity-sdk/2026.6.0 \
+        commander/1.24.3 \
+        slc-cli/6.0.23 \
+        simplicity-sdk/2026.6.1 \
         zap/2026.06.17 \
     # Unused, remove to save space
     && slt --non-interactive uninstall --force llvm-arm-toolchain-for-embedded \
@@ -64,14 +64,15 @@ ENV LC_ALL=C.UTF-8
 RUN set -e \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-       ca-certificates \
-       git \
-       jq \
-       libstdc++6 \
-       libgl1 \
-       libpng16-16 \
-       libpcre2-16-0 \
-       libglib2.0-0 \
+        ca-certificates \
+        git \
+        jq \
+        libstdc++6 \
+        libgl1 \
+        libpng16-16 \
+        libpcre2-16-0 \
+        libglib2.0-0 \
+        libdbus-1-3 \
     && rm -rf /var/lib/apt/lists/* \
     # Fix git permission error when building locally
     && git config --global --add safe.directory '*'

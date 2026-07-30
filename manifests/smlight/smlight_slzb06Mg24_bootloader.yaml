@@ -2,7 +2,7 @@ name: SMLIGHT SLZB-06MG24 Bootloader
 device: EFR32MG24A020F1024IM40
 base_project: src/bootloader
 filename: "{manifest_name}_{sdk_version}_{fw_version}"
-sdk: "simplicity_sdk:2026.6.0"
+sdk: "simplicity_sdk:2026.6.1"
 toolchain: "gcc:14.2.1"
 
 gbl:

@@ -2,7 +2,7 @@ name: SMLIGHT SLZB-06MG26U Zigbee Router
 device: EFR32MG26B420F3200IM48
 base_project: src/zigbee_router
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"
-sdk: "simplicity_sdk:2026.6.0"
+sdk: "simplicity_sdk:2026.6.1"
 toolchain: "gcc:14.2.1"
 
 gbl:

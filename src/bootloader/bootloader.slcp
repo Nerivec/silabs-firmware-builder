@@ -10,7 +10,7 @@ description: >
 sdk:
   vendor: silabs
   id: simplicity_sdk
-  version: 2026.6.0
+  version: 2026.6.1
 toolchain_settings: []
 
 category: Example|Bootloader
