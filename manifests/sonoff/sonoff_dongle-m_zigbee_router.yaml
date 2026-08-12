@@ -8,7 +8,7 @@ toolchain: "gcc:14.2.1"
 gbl:
   fw_type: zigbee_router
   baudrate: 115200
-  fw_variant: sw_flow
+  fw_variant: no_flow
 
 # TODO: data on button/led?
 

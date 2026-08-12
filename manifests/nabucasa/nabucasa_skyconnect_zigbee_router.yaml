@@ -8,11 +8,11 @@ toolchain: "gcc:14.2.1"
 gbl:
   fw_type: zigbee_router
   baudrate: 115200
-  fw_variant: sw_flow
+  fw_variant: no_flow
 
 c_defines:
   SL_IOSTREAM_USART_VCOM_BAUDRATE: 115200
-  SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE: uartFlowControlSoftware
+  SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE: usartHwFlowControlNone
 
   SL_IOSTREAM_USART_VCOM_PERIPHERAL: USART0
   SL_IOSTREAM_USART_VCOM_PERIPHERAL_NO: 0

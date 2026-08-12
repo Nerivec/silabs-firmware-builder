@@ -8,7 +8,7 @@ toolchain: "gcc:14.2.1"
 gbl:
   fw_type: openthread_rcp
   baudrate: 115200
-  fw_variant: sw_flow
+  fw_variant: no_flow
 
 c_defines:
   SL_IOSTREAM_EUSART_VCOM_BAUDRATE: 115200
