@@ -1,4 +1,4 @@
-name: SMLIGHT SLZB-MR5U OpenThread RCP
+name: SMLIGHT SLZB-MR3U OpenThread RCP
 device: EFR32MG24A020F1024IM40
 base_project: src/openthread_rcp
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"

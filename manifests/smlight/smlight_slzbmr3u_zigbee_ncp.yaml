@@ -1,12 +1,12 @@
-name: SMLIGHT SLZB-MR5U OpenThread RCP
+name: SMLIGHT SLZB-MR3U Zigbee NCP
 device: EFR32MG24A020F1024IM40
-base_project: src/openthread_rcp
+base_project: src/zigbee_ncp
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"
 sdk: "simplicity_sdk:2026.6.1"
 toolchain: "gcc:14.2.1"
 
 gbl:
-  fw_type: openthread_rcp
+  fw_type: zigbee_ncp
   baudrate: 460800
   fw_variant: hw_flow
 
@@ -32,6 +32,3 @@ c_defines:
   SL_CLOCK_MANAGER_HFXO_CTUNE: 140
 
   SL_RAIL_UTIL_RSSI_OFFSET: 0
-
-sdk_patches:
-  - enable-greenpower-without-multipan.patch
