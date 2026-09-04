@@ -1,4 +1,4 @@
-name: SMLIGHT SLZB-MR5U Zigbee NCP
+name: SMLIGHT SLZB-MR3U Zigbee NCP
 device: EFR32MG24A020F1024IM40
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"
