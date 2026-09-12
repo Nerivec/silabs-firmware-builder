@@ -29,12 +29,6 @@ See https://www.zigbee2mqtt.io/guide/adapters/emberznet.html#firmware-flashing
 #### Model - special cases
 
 - `<model>-noled` => builds that disable the LEDs
-- `slzb06mu` => use `slzb06m`
-- `slzb06Mg24u` => use `slzb06Mg24`
-- `slzbmr1u` => use `slzb06m`
-- `slzbmr2u` => use `slzb06m`
-- `slzbmr3u` => use `slzb06Mg26u`
-- `slzbmr4u` => use `slzb06Mg26`
 
 #### Baudrate
 
