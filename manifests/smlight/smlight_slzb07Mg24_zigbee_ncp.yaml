@@ -1,5 +1,5 @@
 name: SMLIGHT SLZB-07MG24 Zigbee NCP
-device: EFR32MG24A020F1024IM40
+device: EFR32MG24A020F1024IM48
 base_project: src/zigbee_ncp
 filename: "{manifest_name}_{sdk_version}_{fw_version}_{baudrate}_{fw_variant}"
 sdk: "simplicity_sdk:2026.6.1"
