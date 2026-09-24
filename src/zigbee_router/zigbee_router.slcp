@@ -181,9 +181,9 @@ configuration:
   - name: SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_ENABLE_AUTOSTART
     value: 0
   - name: SL_ZIGBEE_AF_PLUGIN_TRUST_CENTER_KEEPALIVE_DEFAULT_BASE_PERIOD_MINUTES
-    value: 1
+    value: 10
   - name: SL_ZIGBEE_AF_PLUGIN_TRUST_CENTER_KEEPALIVE_DEFAULT_JITTER_PERIOD_SECONDS
-    value: 30
+    value: 300
   # custom from zigbee_z4_light & zigbee_gp_z3_light_combo
   - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
     value: 64
