@@ -98,7 +98,7 @@ configuration:
   - name: SL_OPENTHREAD_STACK_TASK_MEM_SIZE
     value: 4608
   - name: SL_STACK_SIZE
-    value: 0x800
+    value: 4096
     condition:
       - kernel
   # custom from ot-rcp
@@ -112,6 +112,9 @@ configuration:
       - iostream_eusart
   - name: OPENTHREAD_CONFIG_LINK_RAW_ENABLE
     value: 1
+  # uint16_t
+  - name: OPENTHREAD_CONFIG_MLE_MAX_CHILDREN
+    value: 128
 
 include:
   - path: .
