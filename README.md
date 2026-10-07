@@ -89,7 +89,7 @@ Beware:
 - Increasing a config results in more memory allocated (varies based on the config). If too much memory is allocated for a board, the building of the firmware _should_ fail.
 - Use of `FF` for configs (e.g. `0xFF` -`255`- for uint8). These usually have special meaning and may have unintended consequences. Best to use 254 if wanting "max", else verify the actual stack config once flashed: https://github.com/Nerivec/ember-zli/wiki/Stack#get-stack-config-firmware-defaults
 - Some tables may not have any use (or very limited) in specific contexts (e.g. `zigbee_ncp` vs `zigbee_router`, group-heavy network, etc.), hence, changing sizes could result in wasted memory in that area.
-
+- Drastic changes in configs (especially around table sizes) may require clearing the NVM3. See https://github.com/Nerivec/ember-zli/wiki/Bootloader#clear-nvm3
 
 https://docs.silabs.com/zigbee/latest/sisdk-ezsp-reference-guide/
 
