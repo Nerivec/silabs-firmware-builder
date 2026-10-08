@@ -21,7 +21,7 @@ RUN set -e \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
     && aria2c --checksum=sha-256=8c2dd5091c15d5dd7b8fc978a512c49d9b9c5da83d4d0b820cfe983b38ef3612 -o slt.zip \
-       https://github.com/egony/egony.github.io/blob/master/Devices/Misc/slt-cli-1.1.0-linux-x64.zip \    
+       https://github.com/egony/egony.github.io/raw/refs/heads/master/Devices/Misc/slt-cli-1.1.0-linux-x64.zip \    
     && bsdtar -xf slt.zip -C /usr/bin && rm slt.zip \
     && chmod +x /usr/bin/slt \
     && slt --non-interactive install conan
