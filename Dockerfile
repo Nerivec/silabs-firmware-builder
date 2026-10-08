@@ -13,6 +13,7 @@ ARG TARGETARCH
 RUN set -e \
     && apt-get update && apt-get install -y --no-install-recommends \
         jq \
+        curl \
         aria2 \
         ca-certificates \
         # Required by conan
@@ -20,6 +21,10 @@ RUN set -e \
         bzip2 \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
+    # && aria2c --checksum=sha-256=8c2dd5091c15d5dd7b8fc978a512c49d9b9c5da83d4d0b820cfe983b38ef3612 -o slt.zip \
+    #    https://www.silabs.com/documents/public/software/slt-cli-1.1.0-linux-x64.zip \
+    && curl -fIL --retry 3 \
+        https://www.silabs.com/documents/public/software/slt-cli-1.1.0-linux-x64.zip \
     && aria2c --checksum=sha-256=8c2dd5091c15d5dd7b8fc978a512c49d9b9c5da83d4d0b820cfe983b38ef3612 -o slt.zip \
         https://www.silabs.com/documents/public/software/slt-cli-1.1.0-linux-x64.zip \
     && bsdtar -xf slt.zip -C /usr/bin && rm slt.zip \
