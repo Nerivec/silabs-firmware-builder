@@ -13,9 +13,8 @@ on:
         required: false
       build_image:
         type: string
-        description: "GHCR image to run the build with (NOTE: will be rebuilt if outdated)"
-        default: "Nerivec/silabs-firmware-builder"
-        required: true
+        description: "GHCR image to run the build with (NOTE: will be rebuilt if outdated, which requires permissions)"
+        required: false
   release:
     types:
       - published
@@ -64,7 +63,7 @@ jobs:
       - name: Read repository information
         id: read-repo-info
         run: |
-          base_image=$(echo ${{ inputs.build_image || github.repository }} | awk '{print tolower($0)}')
+          base_image=$(echo "${{ inputs.build_image || github.repository }}" | awk '{print tolower($0)}')
           tag_name=$(echo "${{ hashFiles('Dockerfile', 'requirements.txt') }}" | cut -c-16)
 
           image_name=$base_image

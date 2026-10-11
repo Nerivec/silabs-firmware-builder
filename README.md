@@ -94,3 +94,9 @@ Beware:
 https://docs.silabs.com/zigbee/latest/sisdk-ezsp-reference-guide/
 
 https://docs.silabs.com/zigbee/latest/sisdk-ezsp-reference-guide/02-emberznet-serial-protocol#configuration-values
+
+> [!IMPORTANT]
+> The `workflow_dispatch` trigger in the build workflow allows to run the workflow from GitHub at will (in `Actions` tab).
+> It will use the specified GHCR image to build the firmware.
+> Using `Nerivec/silabs-firmware-builder` is fine (faster, no initial build).
+> However, if you change the `Dockerfile`, that will result in failure due to lack of permissions; in that case, you must specify your own fork.
