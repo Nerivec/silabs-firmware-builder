@@ -4,12 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       manifest_glob:
+        type: string
         description: "Manifest glob"
         required: false
       debug:
         type: boolean
         description: "Output build data to artifacts"
         required: false
+      build_image:
+        type: string
+        description: "GHCR image to run the build with (NOTE: will be rebuilt if outdated)"
+        default: "Nerivec/silabs-firmware-builder"
+        required: true
   release:
     types:
       - published
@@ -58,37 +64,15 @@ jobs:
       - name: Read repository information
         id: read-repo-info
         run: |
-          if [[ $GITHUB_EVENT_NAME == "pull_request" ]]; then
-            base_image=$(echo ${{ github.event.pull_request.base.repo.full_name }} | awk '{print tolower($0)}')
-            head_image=$(echo ${{ github.event.pull_request.head.repo.full_name }} | awk '{print tolower($0)}')
-          else
-            base_image=$(echo ${{ github.repository }} | awk '{print tolower($0)}')
-            head_image=$(echo ${{ github.repository }} | awk '{print tolower($0)}')
-          fi
-
+          base_image=$(echo ${{ inputs.build_image || github.repository }} | awk '{print tolower($0)}')
           tag_name=$(echo "${{ hashFiles('Dockerfile', 'requirements.txt') }}" | cut -c-16)
 
-          # Default to building a new container under the original repo
-          image_name=$head_image
+          image_name=$base_image
           build_image=true
 
-          # Check if we can use the base image (Nabu Casa)
+          # Check if we can use the base image
           if docker manifest inspect ${{ env.REGISTRY }}/$base_image:$tag_name; then
-            image_name=$base_image
             build_image=false
-          fi
-
-          # Check if we can use the head image (if this is a PR)
-          if [[ $base_image != $head_image ]]; then
-            if docker manifest inspect ${{ env.REGISTRY }}/$head_image:$tag_name; then
-              image_name=$head_image
-              build_image=false
-            fi
-          fi
-
-          if [[ $build_image == "true" && $GITHUB_EVENT_NAME == "pull_request" ]]; then
-            echo "Cannot build a new container within a PR. Please re-run this action after $head_image:$tag_name is built."
-            exit 1
           fi
 
           echo "build_image=$build_image" >> $GITHUB_OUTPUT
@@ -149,7 +133,7 @@ jobs:
 
       - id: set-matrix
         run: |
-          echo "matrix=$(find manifests -type f \( -name "${{ inputs.manifest_glob || '*' }}.yaml" -o -name "${{ inputs.manifest_glob || '*' }}.yml" \) -print | sort | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+          echo "matrix=$(find manifests -type f -name "${{ inputs.manifest_glob || '*' }}.yaml" -print | sort | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   build-firmwares:
     name: Firmware builder
