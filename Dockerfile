@@ -13,15 +13,14 @@ ARG TARGETARCH
 RUN set -e \
     && apt-get update && apt-get install -y --no-install-recommends \
         jq \
-        aria2 \
+        curl \
         ca-certificates \
         # Required by conan
         libarchive-tools \
         bzip2 \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
-    && aria2c --checksum=sha-256=8c2dd5091c15d5dd7b8fc978a512c49d9b9c5da83d4d0b820cfe983b38ef3612 -o slt.zip \
-        https://www.silabs.com/documents/public/software/slt-cli-1.1.0-linux-x64.zip \
+    && curl -fsSL https://www.silabs.com/documents/public/software/slt-cli-1.2.2-linux-x64.zip -o slt.zip \
     && bsdtar -xf slt.zip -C /usr/bin && rm slt.zip \
     && chmod +x /usr/bin/slt \
     && slt --non-interactive install conan
@@ -32,10 +31,10 @@ RUN set -e \
     && slt --non-interactive install \
         cmake/3.30.2 \
         ninja/1.12.1 \
-        commander/1.24.3 \
-        slc-cli/6.0.23 \
-        simplicity-sdk/2026.6.1 \
-        zap/2026.06.17 \
+        commander/1.25.0 \
+        slc-cli/6.0.25 \
+        simplicity-sdk/2026.6.2 \
+        zap/2026.09.18 \
     # Unused, remove to save space
     && slt --non-interactive uninstall --force llvm-arm-toolchain-for-embedded \
     # Clean up download caches to reduce image size
