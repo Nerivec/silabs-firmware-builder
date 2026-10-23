@@ -33,7 +33,7 @@ c_defines:
   SL_CLOCK_MANAGER_HFXO_FREQ: 38400000
   SL_CLOCK_MANAGER_HFXO_PRECISION: 10
 
-  SL_RAIL_UTIL_RSSI_OFFSET: 0
+  SL_RAIL_UTIL_RSSI_OFFSET: -11
 
 sdk_patches:
   - enable-greenpower-without-multipan.patch
